@@ -42,3 +42,32 @@ ACHIEVEMENT
 - İstemci kodu daha basit ve okunması daha kolay
 - İç karmaşıklık CheckoutFacade'in arkasına gizlendi
 - Sepet veya indirim mantığındaki değişiklikler istemciyi etkilemiyor
+
+## Phase 3 — Observer
+
+WHERE
+`CartObserver.java`, `ConsoleObserver.java`, `ShoppingCart.java` güncellendi
+
+WHY
+ShoppingCart, bir şey olduğunda sistemin diğer bölümlerini bilgilendirmenin bir yoluna sahip değildi.
+Gözlemci, ShoppingCart'ın kimin dinlediğini bilmeden, herhangi bir sayıda dinleyicinin sepet olaylarına tepki vermesine olanak tanır.
+
+ACHIEVEMENT
+- Sepet olayları (ürün eklendi, indirim uygulandı) artık izlenebilir
+- ShoppingCart'a dokunmadan yeni gözlemciler eklenebilir
+- Olay kaynağı ve olay işleyicileri arasında temiz bir ayrım
+
+---
+
+## Phase 3 — Strategy 
+
+WHERE
+`DiscountStrategy.java` ve tüm indirim sınıfları
+
+WHY
+Dize tabanlı indirim seçimi, doğrudan iletilen uygun strateji nesneleriyle değiştirildi. 1. Aşamada başladı, 3. Aşamada tamamlandı.
+
+ACHIEVEMENT
+- İndirim seçimi için artık dize eşleştirmesi yok
+- İndirim davranışı her sınıfta tamamen kapsüllenmiş durumda
+- PROBLEMS.md dosyasındaki OCP ihlalini doğrudan çözüyor
