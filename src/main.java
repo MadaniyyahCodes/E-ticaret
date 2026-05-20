@@ -1,27 +1,27 @@
-import java.util.ArrayList;
-import java.util.List;
-
-
 public class main {
     public static void main(String[] args) {
-        // --- Facade Pattern Demo ---
-        System.out.println("=== Facade Pattern ===");
+
+        // --- Observer Pattern Demo ---
+        System.out.println("=== Observer Pattern ===");
+        ShoppingCart cart = new ShoppingCart();
+        cart.addObserver(new ConsoleObserver());
+
+        cart.addItem(new Item("Wireless Mouse", 150.0, 1));
+        cart.addItem(new Item("Mechanical Keyboard", 350.0, 1));
+
+        System.out.println("WELCOME10 Applied: $" + cart.calculateTotal("WELCOME10"));
+        System.out.println("BLACKFRIDAY Applied: $" + cart.calculateTotal("BLACKFRIDAY"));
+
+        // --- Strategy + Decorator Pattern Demo ---
+        System.out.println("\n=== Strategy + Decorator Pattern ===");
         CheckoutFacade checkout = new CheckoutFacade();
         checkout.addItem("Wireless Mouse", 150.0, 1);
         checkout.addItem("Mechanical Keyboard", 350.0, 1);
 
-        System.out.println("Total without discount: $" + checkout.checkout(null));
-        System.out.println("WELCOME10 Applied: $" + checkout.checkout("WELCOME10"));
-        System.out.println("BLACKFRIDAY Applied: $" + checkout.checkout("BLACKFRIDAY"));
-
-        // --- Decorator Pattern Demo ---
-        System.out.println("\n=== Decorator Pattern ===");
-        CheckoutFacade checkout2 = new CheckoutFacade();
-        checkout2.addItem("Wireless Mouse", 150.0, 1);
-        checkout2.addItem("Mechanical Keyboard", 350.0, 1);
-
-        // Apply Black Friday first, then Welcome on top
-        DiscountStrategy combined = new WelcomeDecorator(new BlackFridayDecorator(total -> total));
-        System.out.println("BlackFriday + Welcome Combined: $" + checkout2.checkoutWithCombinedDiscounts(combined));
+        DiscountStrategy combined = new WelcomeDecorator(
+            new BlackFridayDecorator(total -> total)
+        );
+        System.out.println("BlackFriday + Welcome Combined: $" + 
+            checkout.checkoutWithCombinedDiscounts(combined));
     }
 }
