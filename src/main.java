@@ -2,23 +2,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 public class main {
     public static void main(String[] args) {
-        ShoppingCart cart = new ShoppingCart();
-        cart.addItem(new Item("Wireless Mouse", 150.0, 1));
-        cart.addItem(new Item("Mechanical Keyboard", 350.0, 1));
+        // --- Facade Pattern Demo ---
+        System.out.println("=== Facade Pattern ===");
+        CheckoutFacade checkout = new CheckoutFacade();
+        checkout.addItem("Wireless Mouse", 150.0, 1);
+        checkout.addItem("Mechanical Keyboard", 350.0, 1);
 
-        // Raw total: 150 + 350 = 500
-        System.out.println("Total without discount: $" + cart.calculateTotal(null));
+        System.out.println("Total without discount: $" + checkout.checkout(null));
+        System.out.println("WELCOME10 Applied: $" + checkout.checkout("WELCOME10"));
+        System.out.println("BLACKFRIDAY Applied: $" + checkout.checkout("BLACKFRIDAY"));
 
-        // WELCOME10 Applied (10% Off -> 450)
-        System.out.println("WELCOME10 Applied: $" + cart.calculateTotal("WELCOME10"));
+        // --- Decorator Pattern Demo ---
+        System.out.println("\n=== Decorator Pattern ===");
+        CheckoutFacade checkout2 = new CheckoutFacade();
+        checkout2.addItem("Wireless Mouse", 150.0, 1);
+        checkout2.addItem("Mechanical Keyboard", 350.0, 1);
 
-        // BLACKFRIDAY Applied (50% Off -> 250)
-        System.out.println("BLACKFRIDAY Applied: $" + cart.calculateTotal("BLACKFRIDAY"));
-
-        // OVER100_LIMIT Applied ($20 flat discount -> 480)
-        System.out.println("OVER100_LIMIT Applied: $" + cart.calculateTotal("OVER100_LIMIT"));
+        // Apply Black Friday first, then Welcome on top
+        DiscountStrategy combined = new WelcomeDecorator(new BlackFridayDecorator(total -> total));
+        System.out.println("BlackFriday + Welcome Combined: $" + checkout2.checkoutWithCombinedDiscounts(combined));
     }
 }
